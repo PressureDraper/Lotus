@@ -44,6 +44,8 @@ I highly recommend you to check out [Distube.js](https://distube.js.org/#/docs/D
 
 If you want to invite Lotus to your discord, use the following [link](https://discord.com/api/oauth2/authorize?client_id=930573366648270849&permissions=8&scope=bot). (*You must have admin permissions on the target server*)
 
+![image](https://user-images.githubusercontent.com/61709144/154245426-3a4200b6-0b86-439f-b359-e083966eb69b.png)
+
 ## Commands
 
 :cherry_blossom: Music :cherry_blossom:
