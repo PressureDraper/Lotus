@@ -1,7 +1,9 @@
 const Discord = require('discord.js');
 const { MessageEmbed } = require('discord.js');
 const config = require("./config.json");
-const DisTube = require('distube');
+const { DisTube }  = require('distube');
+const { YtDlpPlugin } = require('@distube/yt-dlp')
+const { SpotifyPlugin } = require('@distube/spotify')
 
 const client = new Discord.Client({ intents: [
 	'GUILDS',
@@ -10,19 +12,27 @@ const client = new Discord.Client({ intents: [
 	]
 });
 
-const distube = new DisTube.default(client, { 
+client.distube = new DisTube(client, { 
 	searchSongs: 5,
 	emitNewSongOnly: false,
 	leaveOnStop: false,
 	leaveOnFinish: false,
-	leaveOnEmpty: true
+	leaveOnEmpty: true,
+	plugins: [
+		new SpotifyPlugin({
+			emitEventsAfterFetching: true
+		}),
+		new YtDlpPlugin()
+	],
+	youtubeDL: false
 });
 
 const prefix = "*";
 
 client.on('ready', () => {
 	//ID channel where main message will be displayed
-	var channel = client.channels.cache.get("PUT_YOUR_OWN_ID_CHANNEL_HERE");
+	var channel = client.channels.cache.get("930572316696522775");
+	//var channel = client.channels.cache.get("817270945315553350");
 	channel.send("Hey, Kiddo. Ready to start your adventure?");
 });
 
@@ -47,13 +57,13 @@ client.on('messageCreate', message => {
 		if (args.length === 0){
 			message.channel.send("You should enter a song name, Tenno. :cherry_blossom:");
 		}else{
-			distube.play(message, args.join(' '));
+			client.distube.play(message, args.join(' '));
 		}
 	}
 
 	if (command === 'song') {
 		if (!message.member.voice.channel) return message.channel.send("Hey, Kiddo. Please join to a voice channel first. :cherry_blossom:")
-		let queue = distube.getQueue(message);
+		let queue = client.distube.getQueue(message);
 		if (!queue) {
         	message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:")
         } else {
@@ -72,19 +82,19 @@ client.on('messageCreate', message => {
 
 	if (command === 'repeat' || command === 'loop'){
 		if (!message.member.voice.channel) return message.channel.send("Hey, Kiddo. Please join to a voice channel first. :cherry_blossom:")
-		let queue = distube.getQueue(message);
+		let queue = client.distube.getQueue(message);
 		if (!queue) return message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:");
 		try {
 			if (args[0].toLowerCase() === "single") {
-				const mode = distube.setRepeatMode(message, 1);
+				client.distube.setRepeatMode(message, 1);
 				message.channel.send(`Set repeat mode to \`Single\``)
 			}
 			if (args[0].toLowerCase()  === "all") {
-				const mode = distube.setRepeatMode(message, 2);
+				client.distube.setRepeatMode(message, 2);
 				message.channel.send(`Set repeat mode to \`All\``)
 			}
 			if (args[0].toLowerCase() === "off") {
-				const mode = distube.setRepeatMode(message, 0);
+				client.distube.setRepeatMode(message, 0);
 				message.channel.send(`Set repeat mode to \`Off\``)
 			}
 			if (args[0].toLowerCase() === undefined) {
@@ -97,20 +107,20 @@ client.on('messageCreate', message => {
 
 	if (command === "stop") {
 		if (!message.member.voice.channel) return message.channel.send("Hey, Kiddo. Please join to a voice channel first. :cherry_blossom:")
-		let queue = distube.getQueue(message);
+		let queue = client.distube.getQueue(message);
 		if (!queue) return message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:");
-        distube.stop(message);
+        client.distube.stop(message);
         message.channel.send("The music has been stopped, my child. :cherry_blossom:");
     }
 
 	if (command === "pause") {
 		if (!message.member.voice.channel) return message.channel.send("Hey, Kiddo. Please join to a voice channel first. :cherry_blossom:")
-		let queue = distube.getQueue(message);
+		let queue = client.distube.getQueue(message);
 		if (!queue) return message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:");
 		try {
 			if (queue.playing === false) return; 
 			else {
-				distube.pause(message);
+				client.distube.pause(message);
 				message.channel.send("The music has been paused, Tenno. :cherry_blossom:");
 			}
 		} catch(e) {
@@ -120,12 +130,12 @@ client.on('messageCreate', message => {
 
 	if (command === "resume") {
 		if (!message.member.voice.channel) return message.channel.send("Hey, Kiddo. Please join to a voice channel first. :cherry_blossom:")
-		let queue = distube.getQueue(message);
+		let queue = client.distube.getQueue(message);
 		if (!queue) return message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:");
 		try {
 			if (queue.playing === true) return; 
 			else {
-				distube.resume(message);
+				client.distube.resume(message);
 				message.channel.send("Continue playing. :cherry_blossom:");
 			}
 		} catch(e) {
@@ -135,13 +145,13 @@ client.on('messageCreate', message => {
 
     if (command === "skip") {
     	if (!message.member.voice.channel) return message.channel.send("Hey, Kiddo. Please join to a voice channel first. :cherry_blossom:")
-    	let queue = distube.getQueue(message);
+    	let queue = client.distube.getQueue(message);
     	if (!queue) return message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:");
     	try {
     		if (queue.songs.length > 1) {
-    			distube.skip(message);
+    			client.distube.skip(message);
     		} else if (queue.songs.length === 1) {
-    			distube.stop(message);
+    			client.distube.stop(message);
     			message.channel.send("The music has been stopped, my child. :cherry_blossom:");
     		}
     	} catch(e) {
@@ -151,7 +161,7 @@ client.on('messageCreate', message => {
 
     if (command === "queue" || command === "q") {
     	if (!message.member.voice.channel) return message.channel.send("Hey, Kiddo. Please join to a voice channel first. :cherry_blossom:")
-        let queue = distube.getQueue(message);
+        let queue = client.distube.getQueue(message);
         if (!queue) {
         	message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:");
         } else {
@@ -163,11 +173,11 @@ client.on('messageCreate', message => {
 
     if (command === 'shuffle') {
 		try {
-			let queue = distube.getQueue(message);
+			let queue = client.distube.getQueue(message);
 			if (!queue) {
 				message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:")
 	        } else if (queue.songs.length > 2) {
-	        	distube.shuffle(message);
+	        	client.distube.shuffle(message);
 	        	message.channel.send(`Current queue has been shuffled. :notes:`);
         } else {
 	        }
@@ -179,7 +189,7 @@ client.on('messageCreate', message => {
     if (command === "join") {
     	try {
     		ch = message.member.voice.channel;
-        	distube.voices.join(ch);
+        	client.distube.voices.join(ch);
     	} catch(e) {
     		console.log(e);
     	}
@@ -187,7 +197,7 @@ client.on('messageCreate', message => {
 
     if (command === "leave") {
     	try {
-    		distube.voices.leave(message);
+    		client.distube.voices.leave(message);
     	} catch(e) {
     		console.log(e);
     	}
@@ -196,29 +206,29 @@ client.on('messageCreate', message => {
     if (command === "volume") {
     	if (!message.member.voice.channel) return message.channel.send("Hey, Kiddo. Please join to a voice channel first. :cherry_blossom:")
     	try {
-    		let queue = distube.getQueue(message);
+    		let queue = client.distube.getQueue(message);
 	        if (!queue) {
 	        	message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:")
 	        } else {
 	        	if (args[0] > 100 || args[0] < 0 ) {
 	    			message.channel.send("Please type a number between 0 :sound: - 100 :loud_sound:, Tenno. :cherry_blossom:")
 	    		} else {
-		    		distube.setVolume(message, Number(args[0]));
+		    		client.distube.setVolume(message, Number(args[0]));
 		    		message.channel.send(`Set volume to \`${args[0]}\`%`)
 	    		}
 	        }
-    	} catch (error) {
+    	} catch (e) {
     		message.channel.send("Correct usage: ***volume 0 - 100**")
-    		console.log(error);
+    		console.log(e);
     	}
     }
 
     //when playing a song, one of this filters can be selected
     if ([`3d`, `bassboost`, `echo`, `karaoke`, `nightcore`, `vaporwave`].includes(command)) {
     	if (!message.member.voice.channel) return message.channel.send("Hey, Kiddo. Please join to a voice channel first. :cherry_blossom:")
-    	let queue = distube.getQueue(message);
+    	let queue = client.distube.getQueue(message);
 		if (!queue) return message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:");
-        const filter = distube.setFilter(message, command)
+        const filter = client.distube.setFilter(message, command)
         message.channel.send(`Current queue filter: \`${filter.join(", ") || "Off"}\``)
     }
 
@@ -260,7 +270,7 @@ client.on('messageCreate', message => {
 });
 //https://cdn.fanbyte.com/wp-content/uploads/2021/12/warframe-new-war-lotus.png?x60655
 //Distube event listeners
-distube
+client.distube
     /*.on("playSong", (queue, song) => queue.textChannel.send(
         `Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}`)
     )*/
@@ -271,13 +281,12 @@ distube
         `Play \`${playlist.name}\` playlist (${playlist.songs.length} songs).\nRequested by: ${song.user}\nNow playing \`${song.name}\` - \`${song.formattedDuration}\`\n${status(queue)}`
     ))
     .on("addList", (queue, playlist) => {
-    	let q = `${queue.songs.length}`
         queue.textChannel.send(
             `Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue:\n`
         )
         queue.textChannel.send(queue.songs.map((song, id) =>
             `**${id + 1}**. ${song.name} (\`${song.formattedDuration}\`)`
-        ).slice(0, q).join("\n"))
+        ).slice(0, 10).join("\n"))
     })
     // DisTubeOptions.searchSongs > 1
     .on("searchResult", (message, result) => {
