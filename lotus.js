@@ -31,13 +31,14 @@ const prefix = "*";
 
 client.on('ready', () => {
 	//ID channel where main message will be displayed
-	var channel = client.channels.cache.get("PUT_YOUR_OWN_ID_CHANNEL_HERE")
+	var channel = client.channels.cache.get("930572316696522775");
+	//var channel = client.channels.cache.get("817270945315553350");
 	channel.send("Hey, Kiddo. Ready to start your adventure?");
 });
 
 client.on('messageCreate', message => {
 
-	client.user.setActivity("*help");
+	client.user.setActivity('Warframe | *help', { type: 'PLAYING' });
 	/*{
 		type: "STREAMING",
 		url: "https://www.twitch.tv/example-url"
@@ -56,7 +57,15 @@ client.on('messageCreate', message => {
 		if (args.length === 0){
 			message.channel.send("You should enter a song name, Tenno. :cherry_blossom:");
 		}else{
-			client.distube.play(message, args.join(' '));
+			try {
+				client.distube.play(message.member.voice?.channel, args.join(' '), {
+					member: message.member,
+					textChannel: message.channel,
+					message
+				});
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	}
 
@@ -66,7 +75,7 @@ client.on('messageCreate', message => {
 		if (!queue) {
         	message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:")
         } else {
-        	message.channel.send('Now playing: ' + queue.songs.map((song, id) =>
+        	message.channel.send('Now playing: ' + queue.songs.map((song) =>
             `${song.name} (\`${song.formattedDuration}\`)`).slice(0, 1));
         }
 	}
@@ -84,20 +93,21 @@ client.on('messageCreate', message => {
 		let queue = client.distube.getQueue(message);
 		if (!queue) return message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:");
 		try {
-			if (args[0].toLowerCase() === "single") {
-				client.distube.setRepeatMode(message, 1);
-				message.channel.send(`Set repeat mode to \`Single\``)
-			}
-			if (args[0].toLowerCase()  === "all") {
-				client.distube.setRepeatMode(message, 2);
-				message.channel.send(`Set repeat mode to \`All\``)
-			}
-			if (args[0].toLowerCase() === "off") {
-				client.distube.setRepeatMode(message, 0);
-				message.channel.send(`Set repeat mode to \`Off\``)
-			}
-			if (args[0].toLowerCase() === undefined) {
-				message.channel.send("Correct usage: ***repeat single || all || off**")
+			if (args[0] === undefined) {
+				message.channel.send("Correct usage: \`*repeat or *loop single | all | off\`")
+			} else {
+				if (args[0].toLowerCase() === "single") {
+					client.distube.setRepeatMode(message, 1);
+					message.channel.send(`Set repeat mode to \`Single\``)
+				}
+				if (args[0].toLowerCase()  === "all") {
+					client.distube.setRepeatMode(message, 2);
+					message.channel.send(`Set repeat mode to \`All\``)
+				}
+				if (args[0].toLowerCase() === "off") {
+					client.distube.setRepeatMode(message, 0);
+					message.channel.send(`Set repeat mode to \`Off\``)
+				}
 			}
 		} catch(e) {
 			console.log(e);
@@ -178,8 +188,9 @@ client.on('messageCreate', message => {
 	        } else if (queue.songs.length > 2) {
 	        	client.distube.shuffle(message);
 	        	message.channel.send(`Current queue has been shuffled. :notes:`);
-        } else {
-	        }
+			} else if (queue.songs.length < 2) {
+				message.channel.send("There need to be more than 2 songs to shuffle the queue, Tenno. :cherry_blossom:");
+			}
 		} catch(e) {
 			console.log(e);
 		}
@@ -217,7 +228,7 @@ client.on('messageCreate', message => {
 	    		}
 	        }
     	} catch (e) {
-    		message.channel.send("Correct usage: ***volume 0 - 100**")
+    		message.channel.send("Correct usage: \`*volume 0 - 100\`")
     		console.log(e);
     	}
     }
@@ -227,14 +238,19 @@ client.on('messageCreate', message => {
     	if (!message.member.voice.channel) return message.channel.send("Hey, Kiddo. Please join to a voice channel first. :cherry_blossom:")
     	let queue = client.distube.getQueue(message);
 		if (!queue) return message.channel.send("There's nothing playing now, Tenno. :cherry_blossom:");
-        const filter = client.distube.setFilter(message, command)
-        message.channel.send(`Current queue filter: \`${filter.join(", ") || "Off"}\``)
+		try {
+			const filter = client.distube.setFilter(message, command)
+        	message.channel.send(`Current queue filter: \`${filter.join(", ") || "Off"}\``)
+		} catch (e) {
+			message.channel.send(`Could not apply ${filter.join(", ")} filter for that song my child. :cry:`)
+			console.log(e)
+		}
     }
 
     if (command === 'help') {
     	let desc = `
     	:cherry_blossom:  *Music*  :cherry_blossom:\n
-*play \`song name\` or *p \`song name\` : Play any song from Youtube ~ :arrow_forward: 
+*play \`song name\` or *p \`song name\` : Play any song/playlist from Youtube or Spotify ~ :arrow_forward: 
 *repeat or *loop \`all\` : Repeat all queue songs ~ :arrows_counterclockwise:
 *repeat or *loop \`single\` : Repeat only current song ~ :repeat_one:
 *repeat or *loop \`off\` : Switch to off repeat mode ~ :x: :arrows_counterclockwise:
@@ -308,8 +324,11 @@ client.distube
     .on("searchInvalidAnswer", (message) => message.channel.send(
 		'Please type a valid number, Tenno. :cherry_blossom:'
 	))
+	.on("initQueue", queue => {
+		queue.volume = 100;
+	})
     .on("searchDone", () => {})
-    .on("error", (channel, error) => {
+    .on("error", (error) => {
     	console.log(error);
     });
 
