@@ -31,8 +31,7 @@ const prefix = "*";
 
 client.on('ready', () => {
 	//ID channel where main message will be displayed
-	var channel = client.channels.cache.get("930572316696522775");
-	//var channel = client.channels.cache.get("817270945315553350");
+	var channel = client.channels.cache.get("PUT_YOUR_OWN_ID_CHANNEL_HERE");
 	channel.send("Hey, Kiddo. Ready to start your adventure?");
 });
 
