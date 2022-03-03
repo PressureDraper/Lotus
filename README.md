@@ -31,11 +31,11 @@ After this you should be ready to rock! 🥰
 # 🌸 Configuration 🌸
 
 - Clone or create your own [config.json](/config.json) file.
-- Put your main ID discord channel on the ready listener. (*line 34*) - right click on the channel -> copy ID
+- Put your main ID discord channel on the ready listener displayed in [lotus.js](/lotus.js) file. (*line 34*) - right click on the channel -> copy ID
 ![image](https://user-images.githubusercontent.com/61709144/154240715-7c223f45-d466-4a5f-86ff-0ace07795eb0.png)
 - Change **prefix** if you want, displayed in [lotus.js](/lotus.js) file. (*line 30*)
 - Change **channel.send** messages for your bot.
-- Change **client.distube** arguments if you want to. (*line 17 - 20*)
+- Change **client.distube** arguments if you want to. (*line 16 - 20*)
 - Personalize embed message to the user who use `help` command.
 
 I highly recommend you to check out [Distube.js](https://distube.js.org/#/docs/DisTube/stable/general/welcome) and [Discord.js](https://discord.js.org/#/docs/discord.js/stable/general/welcome) documentation to get a better understanding of the using of all stuff. 😉
