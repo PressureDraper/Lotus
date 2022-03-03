@@ -36,7 +36,7 @@ After this you should be ready to rock! 🥰
 - Change **prefix** if you want, displayed in [lotus.js](/lotus.js) file. (*line 30*)
 - Change **channel.send** messages for your bot.
 - Change **client.distube** arguments if you want to. (*line 16 - 20*)
-- Personalize embed message to the user who use `help` command.
+- Personalize embed message to the user who use `help` command displayed in [lotus.js](/lotus.js) file. (*line 274 - 283*)
 
 I highly recommend you to check out [Distube.js](https://distube.js.org/#/docs/DisTube/stable/general/welcome) and [Discord.js](https://discord.js.org/#/docs/discord.js/stable/general/welcome) documentation to get a better understanding of the using of all stuff. 😉
 
