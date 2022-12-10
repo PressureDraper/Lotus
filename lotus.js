@@ -1,9 +1,11 @@
 const Discord = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
+const { GatewayIntentBits, ActivityType } = require('discord.js');
 const config = require("./config.json");
 const { DisTube }  = require('distube');
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const { SpotifyPlugin } = require('@distube/spotify')
+
 
 
 const client = new Discord.Client({
@@ -40,7 +42,15 @@ client.on('ready', () => {
 
 client.on('messageCreate', async message => {
 
-	client.user.setActivity('Warframe | *help', { type: 'PLAYING' });
+	// client.user.setActivity('Warframe | *help', { type: 'PLAYING' });
+	client.user.setPresence({
+		activities: [{ 
+			name: `Warframe | *help `, 
+			type: ActivityType.Playing 
+		},
+	],
+		status: 'idle',
+	});
 	/*{
 		type: "STREAMING",
 		url: "https://www.twitch.tv/example-url"
