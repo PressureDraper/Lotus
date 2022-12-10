@@ -1,7 +1,7 @@
 # 🌸 Introduction 🌸
 Lotus is a simple but powerful Discord bot made over Node.js that plays music from Youtube and Spotify immersed into Warframe game thematic. ❤️
 
-![Imagen](https://images-ext-2.discordapp.net/external/UyBnKuFc1uvUQkQdiU58TdWK4KPtJCZVMbA1PsoKsJc/https/64.media.tumblr.com/8419269fba8f8141cdb286199c26e7d0/cae3ab100cfd2b48-35/s540x810/87dcc421e7b173a108abea55120ee1f9315c5b10.gifv)
+![Image](https://images-ext-2.discordapp.net/external/UyBnKuFc1uvUQkQdiU58TdWK4KPtJCZVMbA1PsoKsJc/https/64.media.tumblr.com/8419269fba8f8141cdb286199c26e7d0/cae3ab100cfd2b48-35/s540x810/87dcc421e7b173a108abea55120ee1f9315c5b10.gifv)
 
 # 🌸 Requirements 🌸
 
@@ -19,24 +19,29 @@ Execute all commands on the target folder you already created❗︎
 
 1. npm init 
 2. npm install discord.js
-3. npm install distube
+3. npm install distube@latest
 4. npm install @distube/yt-dlp@latest
-5. npm install ffmpeg-static
+5. npm install @distube/ytdl-core@latest
 6. npm install @discordjs/opus
 7. npm install @distube/spotify@latest
 8. npm install libsodium-wrappers
+9. sudo apt install ffmpeg
+10. check ffmpeg version with:
+```
+ffmpeg -version
+```
 
 After this you should be ready to rock! 🥰
 
 # 🌸 Configuration 🌸
 
 - Clone or create your own [config.json](/config.json) file.
-- Put your main ID discord channel on the ready listener displayed in [lotus.js](/lotus.js) file. (*line 34*) - right click on the channel -> copy ID
+- Put your main ID discord channel on the ready listener displayed in [lotus.js](/lotus.js) file. (*line 36*) - right click on the channel -> copy ID
 ![image](https://user-images.githubusercontent.com/61709144/154240715-7c223f45-d466-4a5f-86ff-0ace07795eb0.png)
-- Change **prefix** if you want, displayed in [lotus.js](/lotus.js) file. (*line 30*)
+- Change **prefix** if you want, displayed in [lotus.js](/lotus.js) file. (*line 32*)
 - Change **channel.send** messages for your bot.
-- Change **client.distube** arguments if you want to. (*line 16 - 20*)
-- Personalize embed message to the user who use `help` command displayed in [lotus.js](/lotus.js) file. (*line 274 - 283*)
+- Change **client.distube** arguments if you want to. (*line 18 - 30*)
+- Personalize embed message to the user who use `help` command displayed in [lotus.js](/lotus.js) file. (*line 252 - 287*)
 
 I highly recommend you to check out [Distube.js](https://distube.js.org/#/docs/DisTube/stable/general/welcome) and [Discord.js](https://discord.js.org/#/docs/discord.js/stable/general/welcome) documentation to get a better understanding of the using of all stuff. 😉
 
