@@ -1,14 +1,17 @@
 const Discord = require('discord.js');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const config = require("./config.json");
 const { DisTube }  = require('distube');
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const { SpotifyPlugin } = require('@distube/spotify')
 
-const client = new Discord.Client({ intents: [
-	'GUILDS',
-	'GUILD_VOICE_STATES',
-	'GUILD_MESSAGES',
+
+const client = new Discord.Client({
+	intents: [
+	  Discord.GatewayIntentBits.Guilds,
+	  Discord.GatewayIntentBits.GuildMessages,
+	  Discord.GatewayIntentBits.GuildVoiceStates,
+	  Discord.GatewayIntentBits.MessageContent
 	]
 });
 
@@ -23,19 +26,19 @@ client.distube = new DisTube(client, {
 			emitEventsAfterFetching: true
 		}),
 		new YtDlpPlugin()
-	],
-	youtubeDL: false
+	]
 });
 
 const prefix = "*";
 
 client.on('ready', () => {
 	//ID channel where main message will be displayed
-	var channel = client.channels.cache.get("PUT_YOUR_OWN_ID_CHANNEL_HERE");
+	var channel = client.channels.cache.get("930572316696522775");
+	//var channel = client.channels.cache.get("817270945315553350");
 	channel.send("Hey, Kiddo. Ready to start your adventure?");
 });
 
-client.on('messageCreate', message => {
+client.on('messageCreate', async message => {
 
 	client.user.setActivity('Warframe | *help', { type: 'PLAYING' });
 	/*{
@@ -46,7 +49,7 @@ client.on('messageCreate', message => {
 	if (message.author.bot || !message.guild) return;
 	if (!message.content.startsWith(prefix)) return;
 
-	//args = array that saves all incoming words after prefix *
+	//args = array that saves all incoming words after prefix *command [ 'p', 'args' ]
 	const args = message.content.slice(prefix.length).trim().split(" ");
 	//saving only main command on variable and removing main command from args array
 	const command = args.shift().toLowerCase();
@@ -249,29 +252,29 @@ client.on('messageCreate', message => {
     if (command === 'help') {
     	let desc = `
     	:cherry_blossom:  *Music*  :cherry_blossom:\n
-*play \`song name\` or *p \`song name\` : Play any song/playlist from Youtube or Spotify ~ :arrow_forward: 
-*repeat or *loop \`all\` : Repeat all queue songs ~ :arrows_counterclockwise:
-*repeat or *loop \`single\` : Repeat only current song ~ :repeat_one:
-*repeat or *loop \`off\` : Switch to off repeat mode ~ :x: :arrows_counterclockwise:
-*stop : Empty current queue and stop the music ~ :no_entry_sign:
-*song : Displays the name of the current playing song ~ :one: :notes:
-*pause : Pause current song or queue ~ :pause_button:
-*resume : Continue playing songs ~ :play_pause:
-*skip : Skip current song ~ :track_next:
-*queue or *q : Show current song list ~ :1234:
-*shuffle : Shuffle current playlist songs : :twisted_rightwards_arrows:
-*volume \`0 - 100\` : **Only** when a song is playing, you can use this command to increase or decrease Lotus volume ~ :sound: :loud_sound:\n
+\\*play \`song name\` or \\*p \`song name\` : Play any song/playlist from Youtube or Spotify ~ :arrow_forward: 
+\\*repeat or \\*loop \`all\` : Repeat all queue songs ~ :arrows_counterclockwise:
+\\*repeat or \\*loop \`single\` : Repeat only current song ~ :repeat_one:
+\\*repeat or \\*loop \`off\` : Switch to off repeat mode ~ :x: :arrows_counterclockwise:
+\\*stop : Empty current queue and stop the music ~ :no_entry_sign:
+\\*song : Display the name of the current playing song ~ :one: :notes:
+\\*pause : Pause current song or queue ~ :pause_button:
+\\*resume : Continue playing songs ~ :play_pause:
+\\*skip : Skip current song ~ :track_next:
+\\*queue or \\*q : Show current song list ~ :1234:
+\\*shuffle : Shuffle current playlist songs : :twisted_rightwards_arrows:
+\\*volume \`0 - 100\` : **Only** when a song is playing, you can use this command to increase or decrease Lotus volume (Default is 100) ~ :sound: :loud_sound:\n
 :cherry_blossom:  *Filters*  :cherry_blossom:\n
 **Only** when a song is playing, you can choose one of these filters to change music perception:
-*3d | *bassboost | *echo | *karaoke | *nightcore | *vaporwave
+\\*3d | \\*bassboost | \\*echo | \\*karaoke | \\*nightcore | \\*vaporwave
 
-*Note:* To turn off any filter, just type the command of the filter you selected again.\n
+*Note*: To turn off any filter, just type the command of the filter you selected again.\n
 :cherry_blossom:  *Management*  :cherry_blossom:\n
 *join : Tell Lotus to join your current voice channel ~ :cherry_blossom: :blush:
 *leave : Tell Lotus to leave your current voice channel ~ :sob: :ok_hand:
 *ping : Check if Lotus is being chased by Ballas again showing her heartbeat ~ :heartbeat: 
 `;
-    	const membed = new MessageEmbed()
+    	const membed = new EmbedBuilder()
     		.setColor('#945AFA')
     		.setTitle('These are all my useful commands:')
     		.setDescription(`${desc}`)
