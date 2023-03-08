@@ -39,7 +39,6 @@ After this you should be ready to rock! 🥰
 
 - Clone or create your own [config.json](/config.json) file.
 - Put your main ID discord channel on the ready listener displayed in [lotus.js](/lotus.js) file. (*line 38*) - right click on the channel -> copy ID
-<br>
 ![image](https://user-images.githubusercontent.com/61709144/154240715-7c223f45-d466-4a5f-86ff-0ace07795eb0.png)
 - Change **prefix** if you want, displayed in [lotus.js](/lotus.js) file. (*line 34*)
 - Change **channel.send** messages for your bot.
