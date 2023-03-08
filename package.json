@@ -1,21 +1,28 @@
 {
-  "name": "lotus_discord",
+  "name": "lotus",
   "version": "1.0.0",
-  "description": "",
+  "description": "Lotus is a simple but powerful Discord bot made over Node.js that plays music from Youtube and Spotify immersed into Warframe game thematic. ❤️",
   "main": "lotus.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PressureDraper/Lotus.git"
+  },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PressureDraper/Lotus/issues"
+  },
+  "homepage": "https://github.com/PressureDraper/Lotus#readme",
   "dependencies": {
-    "@discordjs/opus": "^0.8.0",
-    "@discordjs/voice": "^0.14.0",
-    "@distube/spotify": "^1.4.2",
+    "@discordjs/opus": "^0.9.0",
+    "@distube/spotify": "^1.5.1",
     "@distube/yt-dlp": "^1.1.3",
     "@distube/ytdl-core": "^4.11.7",
     "discord.js": "^14.7.1",
     "distube": "^4.0.4",
-    "libsodium-wrappers": "^0.7.10"
+    "libsodium-wrappers": "^0.7.11"
   }
 }

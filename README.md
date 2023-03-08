@@ -9,6 +9,8 @@ Lotus is a simple but powerful Discord bot made over Node.js that plays music fr
 - Have installed [node.js](https://nodejs.org/es/).
 - Have created a target folder where all files will be storaged.
 - Have enabled [Discord developer mode](https://www.youtube.com/watch?v=13LeA6m9kU8) (random info video)
+- Node.js version **MUST** be 18.12.1 or higer
+- NPM version **MUST** be 9.2.0 or higher
 
 # 🌸 Installing dependencies 🌸
 `To avoid problems with packages, init node_modules folder and install modules as follows:`
@@ -36,12 +38,13 @@ After this you should be ready to rock! 🥰
 # 🌸 Configuration 🌸
 
 - Clone or create your own [config.json](/config.json) file.
-- Put your main ID discord channel on the ready listener displayed in [lotus.js](/lotus.js) file. (*line 36*) - right click on the channel -> copy ID
+- Put your main ID discord channel on the ready listener displayed in [lotus.js](/lotus.js) file. (*line 38*) - right click on the channel -> copy ID
+<br>
 ![image](https://user-images.githubusercontent.com/61709144/154240715-7c223f45-d466-4a5f-86ff-0ace07795eb0.png)
-- Change **prefix** if you want, displayed in [lotus.js](/lotus.js) file. (*line 32*)
+- Change **prefix** if you want, displayed in [lotus.js](/lotus.js) file. (*line 34*)
 - Change **channel.send** messages for your bot.
-- Change **client.distube** arguments if you want to. (*line 18 - 30*)
-- Personalize embed message to the user who use `help` command displayed in [lotus.js](/lotus.js) file. (*line 252 - 287*)
+- Change **client.distube** arguments if you want to. (*line 20 - 32*)
+- Personalize embed message to the user who use `help` command displayed in [lotus.js](/lotus.js) file. (*line 262 - 297*)
 
 I highly recommend you to check out [Distube.js](https://distube.js.org/#/docs/DisTube/stable/general/welcome) and [Discord.js](https://discord.js.org/#/docs/discord.js/stable/general/welcome) documentation to get a better understanding of the using of all stuff. 😉
 
